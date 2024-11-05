@@ -19,11 +19,10 @@ export interface RegisterUser {
 // Opcionalmente, puedes definir un modelo para el inicio de sesión
 export interface LoginUser {
     username: string; // Nombre de usuario
-    password: string; // Contraseña del usuario
+    PasswordHash: string; // Contraseña del usuario
 }
 
 // Puedes incluir otros modelos relacionados, como un modelo para el JWT
 export interface AuthResponse {
     token: string; // Token de autenticación
-    user: User; // Información del usuario autenticado
 }

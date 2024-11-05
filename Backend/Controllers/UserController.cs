@@ -23,7 +23,7 @@ namespace Backend.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(User user)
+        public async Task<IActionResult> Register([FromBody] User user)
         {
             user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
             await _context.Users.AddAsync(user);
@@ -58,6 +58,14 @@ namespace Backend.Controllers
             var tokenString = tokenHandler.WriteToken(token);
 
             return Ok(new { Token = tokenString });
+        }
+
+        [HttpGet("list")]
+        public async Task<IActionResult> list([FromBody] User loginUser)
+        {
+           
+
+            return Ok(await _context.Users.ToListAsync());
         }
     }
 }

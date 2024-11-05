@@ -70,14 +70,14 @@ export default function RootLayout() {
       <AuthProvider>
         <Stack>
           <Stack.Screen
-            name="index"
+            name="login"
             options={{
               headerShown: false,
               title: "Starter Base",
               headerRight: () => <ThemeToggle />,
             }}
           />
-          <Stack.Screen name="cam" options={{ headerShown: false }} />
+          <Stack.Screen name="(app)" options={{ headerShown: false }} />
           <Stack.Screen name="register" options={{ headerShown: false }} />
         </Stack>
         <PortalHost />

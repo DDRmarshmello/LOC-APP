@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Backend.Models
 {
+    [Table("user")]
     public class User
     {
         [Key]
@@ -14,12 +16,12 @@ namespace Backend.Models
         [Required(ErrorMessage = "La contraseña es obligatoria.")]
         public string PasswordHash { get; set; }
 
-        [Required(ErrorMessage = "El correo electrónico es obligatorio.")]
         [StringLength(150, ErrorMessage = "El correo electrónico no puede exceder los 150 caracteres.")]
         [EmailAddress(ErrorMessage = "El formato del correo electrónico no es válido.")]
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
         // Puedes incluir propiedades adicionales según tus necesidades
+        public bool IsActive { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow; // Fecha de creación
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow; // Fecha de actualización
     }

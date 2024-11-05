@@ -19,6 +19,7 @@ class AuthService {
     try {
       const response = await apiService.post<AuthResponse, LoginUser>('/user/login', user);
       // Establece el token en el servicio API si la autenticación es exitosa
+      console.log("Hola")
       apiService.setAuthToken(response.token);
       return response;
     } catch (error) {

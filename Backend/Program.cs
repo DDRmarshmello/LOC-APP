@@ -33,9 +33,18 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
     new MySqlServerVersion(new Version(8, 0, 21))));
 
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("PermitirOrigenReactNative", policy =>
+    {
+        policy.WithOrigins("http://localhost:8081") // Cambia esta URL por la de tu app en Expo
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials(); // Si necesitas habilitar cookies o autenticación
+    });
+});
 var app = builder.Build();
-
+app.UseCors("PermitirOrigenReactNative");
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
