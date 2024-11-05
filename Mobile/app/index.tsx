@@ -1,10 +1,16 @@
 import * as React from "react";
+import { useState, useEffect } from "react";
 import { View, Image, StatusBar, TextInput, TouchableOpacity } from "react-native";
+import { LoginUser } from "~/lib/Types";
 import { Text } from "~/components/ui/text";
 import Animated, {FadeIn, FadeInDown, FadeInUp, FadeOut} from "react-native-reanimated";import { Link } from "expo-router";
-{}
+
 
 export default function Screen() {
+    const [userData, setUserData] = useState<LoginUser>({ username: '', password: '' });
+    const [error, setError] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+
   return (
     <View className="bg-white h-full w-full dark:bg-gray-800">
         <StatusBar barStyle={"light-content"}/>
