@@ -63,8 +63,6 @@ namespace Backend.Controllers
         [HttpGet("list")]
         public async Task<IActionResult> list([FromBody] User loginUser)
         {
-           
-
             return Ok(await _context.Users.ToListAsync());
         }
     }

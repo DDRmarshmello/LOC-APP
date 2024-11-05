@@ -12,6 +12,7 @@ import { Text } from "~/components/ui/text";
 import Animated, { FadeInDown, FadeInUp } from "react-native-reanimated";
 import { Link } from "expo-router";
 import { useAuth } from "~/services/AuthContext";
+import { router } from 'expo-router';
 
 export default function Screen() {
   const { login, error, isLoading } = useAuth();
@@ -95,7 +96,15 @@ export default function Screen() {
             entering={FadeInDown.delay(400).duration(1000).springify()}
             className="w-full"
           >
-            <TouchableOpacity className="w-full bg-sky-400 p-4 rounded-2xl" onPress={handleLogin}>
+            <TouchableOpacity
+              className="w-full bg-sky-400 p-4 rounded-2xl"
+              onPress={() => {
+                handleLogin();
+                // Navigate after signing in. You may want to tweak this to ensure sign-in is
+                // successful before navigating.
+                router.replace("/");
+              }}
+            >
               <Text className="text-xl font-bold text-white text-center">
                 Iniciar Sesión
               </Text>
@@ -109,7 +118,7 @@ export default function Screen() {
             <Text className="text-black dark:text-white">
               No tienes cuenta ?{" "}
             </Text>
-            <TouchableOpacity >
+            <TouchableOpacity>
               <Link href="/register">
                 <Text className="text-sky-600">Crear Cuenta</Text>
               </Link>

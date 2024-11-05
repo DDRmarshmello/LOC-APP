@@ -37,7 +37,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("PermitirOrigenReactNative", policy =>
     {
-        policy.WithOrigins("http://localhost:8081") // Cambia esta URL por la de tu app en Expo
+        policy.WithOrigins("http://localhost:8081") 
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials(); // Si necesitas habilitar cookies o autenticación

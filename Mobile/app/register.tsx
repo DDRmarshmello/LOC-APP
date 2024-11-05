@@ -14,8 +14,6 @@ import Animated, {
   FadeOut,
 } from "react-native-reanimated";
 import { Link } from "expo-router";
-{
-}
 
 export default function Screen() {
   return (
