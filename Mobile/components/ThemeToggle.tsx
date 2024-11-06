@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Pressable, View } from 'react-native';
+import { Pressable, View, Switch } from 'react-native';
 import { setAndroidNavigationBar } from '~/lib/android-navigation-bar';
 import { MoonStar } from '~/lib/icons/MoonStar';
 import { Sun } from '~/lib/icons/Sun';
@@ -9,7 +9,13 @@ import { cn } from '~/lib/utils';
 export function ThemeToggle() {
   const { isDarkColorScheme, setColorScheme } = useColorScheme();
   return (
-    <Pressable
+    <Switch value={isDarkColorScheme} onValueChange={() => {
+      const newTheme = isDarkColorScheme ? 'light' : 'dark';
+      setColorScheme(newTheme);
+      setAndroidNavigationBar(newTheme);
+      AsyncStorage.setItem('theme', newTheme);
+    }} />
+/*     <Pressable
       onPress={() => {
         const newTheme = isDarkColorScheme ? 'light' : 'dark';
         setColorScheme(newTheme);
@@ -32,6 +38,6 @@ export function ThemeToggle() {
           )}
         </View>
       )}
-    </Pressable>
+    </Pressable> */
   );
 }

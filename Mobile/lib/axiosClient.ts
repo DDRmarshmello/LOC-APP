@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 class ApiService {
   private instance = axios.create({
-    baseURL: 'https://localhost:7068/api', // Cambia la URL base según tu caso
+    baseURL: 'http://10.0.0.5:7059/api', // Cambia la URL base según tu caso
     timeout: 5000000,
     headers: {
       'Content-Type': 'application/json',
@@ -31,8 +31,8 @@ class ApiService {
   // Método genérico para hacer POST requests
   async post<T, U>(url: string, data: U, config?: AxiosRequestConfig): Promise<T> {
     try {
+      console.log(this.instance.getUri())
       const response: AxiosResponse<T> = await this.instance.post<T>(url, data, config);
-      console.log(response)
       return response.data;
     } catch (error: any) {
       console.error('Error en POST:', error.response?.data || error.message);

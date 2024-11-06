@@ -1,96 +1,161 @@
 import * as React from "react";
-import { View } from "react-native";
-import 
- Animated, {
-  FadeInUp,
-  FadeOutDown,
-  LayoutAnimationConfig,
-} from "react-native-reanimated";
-import { Info, Camera } from "~/lib/icons/Info";
-import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
-import { Button } from "~/components/ui/button";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "~/components/ui/card";
-import { Input } from "~/components/ui/input";
-import { Progress } from "~/components/ui/progress";
-import { Text } from "~/components/ui/text";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "~/components/ui/tooltip";
-import { Link } from "expo-router";
+  ScrollView,
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Image,
+} from "react-native";
+import RoundBtn from "~/components/rounderBtn";
+import { useColorScheme } from "~/lib/useColorScheme";
+import Feather from "@expo/vector-icons/Feather";
+import Animated, { FadeInDown, FadeInUp } from "react-native-reanimated";
+
+
+interface dt {
+  id: number;
+  date: string;
+  Location: string;
+  Person: string;
+}
+const DATA: dt[] = [
+  {
+    id: 1,
+    date: "2024-01-01 06:00 P.M.",
+    Location: "100010101010",
+    Person: "Angel Dilone",
+  },
+  {
+    id: 2,
+    date: "2024-01-01 06:00 P.M.",
+    Location: "100010101010",
+    Person: "Angel Dilone",
+  },
+  {
+    id: 3,
+    date: "2024-01-01 06:00 P.M.",
+    Location: "100010101010",
+    Person: "Angel Dilone",
+  },
+  {
+    id: 4,
+    date: "2024-01-01 06:00 P.M.",
+    Location: "100010101010",
+    Person: "Angel Dilone",
+  },
+  {
+    id: 5,
+    date: "2024-01-01 06:00 P.M.",
+    Location: "100010101010",
+    Person: "Angel Dilone",
+  },
+];
 
 export default function Screen() {
-
+  const { isDarkColorScheme } = useColorScheme();
   return (
-    <View className="flex-1 justify-center items-center gap-5 p-6 bg-secondary/30 ">
-      <Card className="w-full max-w-sm p-6 rounded-2xl">
-        <CardHeader className="items-center">
-          <CardTitle className="text-2xl font-bold text-center">
-            Datos del Evento
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <View className="flex-col justify-center gap-3">
-          <Text className="text-lg">Nombre Completo</Text>
-              <Input
-                className="w-full"
-                placeholder="Escribe tu nombre completo..."
-                aria-labelledby="inputLabel"
-                aria-errormessage="inputError"
-              />
+    <ScrollView className="bg-white dark:bg-gray-800">
+      <Animated.Image
+      entering={FadeInUp.delay(200).duration(1000).springify()}
+        className="h-full w-full absolute"
+        style={{ bottom: 130 }}
+        source={require("../../assets/images/background.png")}
+      />
 
-              <Text className="text-lg">Cedula</Text>
-              <Input
-                keyboardType="numeric"
-                className="w-full"
-                placeholder="Escribe tu cédula..."
-                aria-labelledby="inputLabel"
-                aria-errormessage="inputError"
-              />
+      <View style={{ top: 70 }}>
+        <Animated.Text
+          entering={FadeInUp.delay(400).duration(1000).springify()}
+          className="text-black dark:text-white text-center font-bold"
+          style={{ fontSize: 50 }}
+        >
+          Geo App
+        </Animated.Text>
+      </View>
 
-              <Text className="text-lg">Correo</Text>
-              <Input
-                keyboardType="email-address"
-                className="w-full"
-                placeholder="Escribe tu correo..."
-                aria-labelledby="inputLabel"
-                aria-errormessage="inputError"
-              />
+      <View className="mt-64" style={styles.actionRow}>
+        <RoundBtn icon={"add"} text={"Add money"} />
+        <RoundBtn icon={"refresh"} text={"Exchange"} />
+        <RoundBtn icon={"list"} text={"Details"} />
+      </View>
 
-              <Text className="text-lg">Celular</Text>
-              <Input
-                keyboardType="phone-pad"
-                className="w-full"
-                placeholder="Escribe tu número de celular..."
-                aria-labelledby="inputLabel"
-                aria-errormessage="inputError"
-              />
-            <View className="justify-center items-center">
-              <Link href="/cam">
-                <Camera size={40} strokeWidth={1.5} className='w-5 h-5 text-foreground/70' />
-              </Link>
-            </View>
-          </View>
-
-
-        </CardContent>
-        <CardFooter className="flex-col gap-3 pb-0">
-          <Button
-            variant="outline"
-            className="shadow shadow-foreground/5"
+      <Text className="text-black dark:text-white" style={styles.sectionHeader}>
+        Registros
+      </Text>
+      <View style={styles.transactions} className="bg-gray-400 ">
+        {DATA.length === 0 && (
+          <Text style={{ padding: 14 }}>No registros yet</Text>
+        )}
+        {DATA.map((Data) => (
+          <View
+            key={Data.id}
+            style={{ flexDirection: "row", alignItems: "center", gap: 16 }}
           >
-            <Text>Save</Text>
-          </Button>
-        </CardFooter>
-      </Card>
-    </View>
+            <View
+              className="bg-gray-300 dark:bg-gray-500"
+              style={styles.circle}
+            >
+              <Feather
+                name="align-justify"
+                size={24}
+                color={isDarkColorScheme ? "white" : "dark"}
+              />
+            </View>
+
+            <View style={{ flex: 1 }}>
+              <Text style={{ fontWeight: "400" }}>{Data.Person}</Text>
+              <Text style={{ color: Colors.gray, fontSize: 12 }}>
+                {Data.date.toLocaleString()}
+              </Text>
+            </View>
+            <Text>{Data.Location}</Text>
+          </View>
+        ))}
+      </View>
+    </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  balance: {
+    fontSize: 50,
+    fontWeight: "bold",
+  },
+  sectionHeader: {
+    fontSize: 20,
+    fontWeight: "bold",
+    margin: 20,
+    marginBottom: 10,
+  },
+  currency: {
+    fontSize: 20,
+    fontWeight: "500",
+  },
+  actionRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    padding: 20,
+  },
+  transactions: {
+    marginHorizontal: 20,
+    padding: 14,
+    borderRadius: 16,
+    gap: 20,
+  },
+  circle: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
+
+const Colors = {
+  primary: "#3D38ED",
+  primaryMuted: "#C9C8FA",
+  background: "#F5F5F5",
+  dark: "#141518",
+  gray: "#626D77",
+  lightGray: "#D8DCE2",
+};

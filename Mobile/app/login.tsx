@@ -12,7 +12,7 @@ import { Text } from "~/components/ui/text";
 import Animated, { FadeInDown, FadeInUp } from "react-native-reanimated";
 import { Link } from "expo-router";
 import { useAuth } from "~/services/AuthContext";
-import { router } from 'expo-router';
+import { router } from "expo-router";
 
 export default function Screen() {
   const { login, error, isLoading } = useAuth();
@@ -120,7 +120,7 @@ export default function Screen() {
             </Text>
             <TouchableOpacity>
               <Link href="/register">
-                <Text className="text-sky-600">Crear Cuenta</Text>
+                <Text className="text-sky-600 font-bold">Crear Cuenta</Text>
               </Link>
             </TouchableOpacity>
           </Animated.View>

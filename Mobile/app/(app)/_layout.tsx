@@ -1,6 +1,6 @@
 import { Text } from 'react-native';
-import { Redirect, Stack } from 'expo-router';
-
+import { Redirect, Stack, Tabs } from 'expo-router';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useAuth } from '~/services/AuthContext';
 
 export default function AppLayout() {
@@ -16,9 +16,27 @@ export default function AppLayout() {
   if (!user?.token) {
     // On web, static rendering will stop here as the user is not authenticated
     // in the headless Node process that the pages are rendered in.
-    return <Redirect href="/register" />;
+    return <Redirect href="/login" />;
   }
 
   // This layout can be deferred because it's not the root layout.
-  return <Stack />;
+  return (
+    <Stack>
+      <Stack.Screen
+        name="index"
+        options={{
+          title: 'Home',
+          headerShown: false
+          ,
+        }}
+      />
+      <Stack.Screen
+        name="cam"
+        options={{
+          title: 'Settings',
+          headerShown: false
+        }}
+      />
+    </Stack>
+  );
 }

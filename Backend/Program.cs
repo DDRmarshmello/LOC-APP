@@ -6,6 +6,11 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.ListenAnyIP(7059); // Usa el puerto que prefieras
+});
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
@@ -37,10 +42,9 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("PermitirOrigenReactNative", policy =>
     {
-        policy.WithOrigins("http://localhost:8081") 
-              .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials(); // Si necesitas habilitar cookies o autenticación
+        policy.AllowAnyOrigin()
+                  .AllowAnyMethod()
+                  .AllowAnyHeader();
     });
 });
 var app = builder.Build();
