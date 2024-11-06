@@ -11,6 +11,7 @@ import RoundBtn from "~/components/rounderBtn";
 import { useColorScheme } from "~/lib/useColorScheme";
 import Feather from "@expo/vector-icons/Feather";
 import Animated, { FadeInDown, FadeInUp } from "react-native-reanimated";
+import { router } from "expo-router";
 
 
 interface dt {
@@ -74,9 +75,9 @@ export default function Screen() {
       </View>
 
       <View className="mt-64" style={styles.actionRow}>
-        <RoundBtn icon={"add"} text={"Add money"} />
-        <RoundBtn icon={"refresh"} text={"Exchange"} />
-        <RoundBtn icon={"list"} text={"Details"} />
+        <RoundBtn icon={"add"} text={"Nuevo"} onPress={()=>router.push("/newItems")}/>
+        <RoundBtn icon={"refresh"} text={"Recargar"} />
+        <RoundBtn icon={"list"} text={"Detalle"} />
       </View>
 
       <Text className="text-black dark:text-white" style={styles.sectionHeader}>

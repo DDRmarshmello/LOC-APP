@@ -1,14 +1,20 @@
-import { Text } from 'react-native';
-import { Redirect, Stack, Tabs } from 'expo-router';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { useAuth } from '~/services/AuthContext';
+import { Text, StyleSheet,SafeAreaView,ActivityIndicator } from "react-native";
+import { Redirect, Stack, Tabs } from "expo-router";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { useAuth } from "~/services/AuthContext";
+import { useColorScheme } from "~/lib/useColorScheme";
 
 export default function AppLayout() {
   const { user, isLoading } = useAuth();
+  const { isDarkColorScheme } = useColorScheme();
 
   // You can keep the splash screen open, or render a loading screen like we do here.
   if (isLoading) {
-    return <Text>Loading...</Text>;
+    return (
+      <SafeAreaView style={[styles.container, styles.horizontal]}>
+        <ActivityIndicator size="large" color={isDarkColorScheme ? "#fafafa" : "#0284c7"} />
+      </SafeAreaView>
+    );
   }
 
   // Only require authentication within the (app) group's layout as users
@@ -25,18 +31,30 @@ export default function AppLayout() {
       <Stack.Screen
         name="index"
         options={{
-          title: 'Home',
-          headerShown: false
-          ,
+          title: "Home",
+          headerShown: false,
         }}
       />
       <Stack.Screen
         name="cam"
         options={{
-          title: 'Settings',
-          headerShown: false
+          title: "Settings",
+          headerShown: false,
         }}
       />
+      <Stack.Screen name="newItems" options={{ headerShown: false }} />
     </Stack>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  horizontal: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    padding: 10,
+  },
+});
