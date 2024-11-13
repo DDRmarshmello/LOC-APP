@@ -6,11 +6,14 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Backend.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UserController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -23,6 +26,7 @@ namespace Backend.Controllers
         }
 
         [HttpPost("register")]
+        [AllowAnonymous]
         public async Task<IActionResult> Register([FromBody] User user)
         {
             user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
@@ -32,6 +36,7 @@ namespace Backend.Controllers
         }
 
         [HttpPost("login")]
+        [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] User loginUser)
         {
             var user = await _context.Users.SingleOrDefaultAsync(u => u.Username == loginUser.Username);
@@ -61,9 +66,11 @@ namespace Backend.Controllers
         }
 
         [HttpGet("list")]
-        public async Task<IActionResult> list([FromBody] User loginUser)
+        [Authorize]
+        public async Task<IActionResult> list()
         {
-            return Ok(await _context.Users.ToListAsync());
+            var username = User.FindFirst(ClaimTypes.Name)?.Value;
+            return Ok(await _context.Users.Include(x=>x.EventRegisters).FirstOrDefaultAsync(x=>x.Username == username));
         }
     }
 }
