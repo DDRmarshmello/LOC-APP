@@ -12,6 +12,7 @@ import { PortalHost } from "@rn-primitives/portal";
 import { ThemeToggle } from "~/components/ThemeToggle";
 import { setAndroidNavigationBar } from "~/lib/android-navigation-bar";
 import { AuthProvider } from "~/services/AuthContext";
+import { PhotoProvider } from "~/services/PhotoContext";
 
 const LIGHT_THEME: Theme = {
   dark: false,
@@ -66,22 +67,24 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
-      <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
-      <AuthProvider>
-        <Stack>
-          <Stack.Screen
-            name="login"
-            options={{
-              headerShown: false,
-              title: "Starter Base",
-              headerRight: () => <ThemeToggle />,
-            }}
-          />
-          <Stack.Screen name="(app)" options={{ headerShown: false }} />
-          <Stack.Screen name="register" options={{ headerShown: false }} />
-        </Stack>
-        <PortalHost />
-      </AuthProvider>
+      <PhotoProvider>
+        <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
+        <AuthProvider>
+          <Stack>
+            <Stack.Screen
+              name="login"
+              options={{
+                headerShown: false,
+                title: "Starter Base",
+                headerRight: () => <ThemeToggle />,
+              }}
+            />
+            <Stack.Screen name="(app)" options={{ headerShown: false }} />
+            <Stack.Screen name="register" options={{ headerShown: false }} />
+          </Stack>
+          <PortalHost />
+        </AuthProvider>
+      </PhotoProvider>
     </ThemeProvider>
   );
 }

@@ -62,15 +62,15 @@ namespace Backend.Controllers
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var tokenString = tokenHandler.WriteToken(token);
 
-            return Ok(new { Token = tokenString });
+            return Ok(new { Token = tokenString, id=user.Id, username=user.Username, email=user.Email });
         }
 
         [HttpGet("list")]
-        [Authorize]
+        [AllowAnonymous]
         public async Task<IActionResult> list()
         {
             var username = User.FindFirst(ClaimTypes.Name)?.Value;
-            return Ok(await _context.Users.Include(x=>x.EventRegisters).FirstOrDefaultAsync(x=>x.Username == username));
+            return Ok(await _context.Users.Include(x=>x.EventRegisters).ToListAsync());
         }
     }
 }

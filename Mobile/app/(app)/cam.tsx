@@ -7,14 +7,15 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { Image } from "react-native";
-import { Info, Camera } from "~/lib/icons/Info";
+import { usePhotoContext } from "~/services/PhotoContext";
+import { Camera } from "~/lib/icons/Info";
+import { router } from "expo-router";
 
 export default function App() {
   const [facing, setFacing] = useState<CameraType>("back");
   const [permission, requestPermission] = useCameraPermissions();
   const [cameraRef, setCameraRef] = useState(null);
-  const [photo, setPhoto] = useState(null);
+  const { addPhoto } = usePhotoContext();
 
   if (!permission) {
     // Camera permissions are still loading.
@@ -48,7 +49,8 @@ export default function App() {
           onPress={async () => {
             if (cameraRef) {
               const photoData = await cameraRef.takePictureAsync();
-              setPhoto(photoData.uri);
+              addPhoto(photoData.uri);
+              router.replace('/newItems');
             }
           }}
         >
@@ -60,9 +62,6 @@ export default function App() {
             />
           </View>
         </TouchableWithoutFeedback>
-        {photo && (
-          <Image source={{ uri: photo }} style={styles.preview} />
-        )}
       </CameraView>
     </View>
   );

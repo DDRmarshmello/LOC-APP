@@ -102,7 +102,7 @@ export default function Screen() {
                 handleLogin();
                 // Navigate after signing in. You may want to tweak this to ensure sign-in is
                 // successful before navigating.
-                router.replace("/");
+                router.replace("/(app)");
               }}
             >
               <Text className="text-xl font-bold text-white text-center">

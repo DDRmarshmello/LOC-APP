@@ -33,25 +33,42 @@ namespace Backend.Controllers
                 _context.Entry(eventRegister).State = EntityState.Added;
                 await _context.SaveChangesAsync();
 
-                foreach (var item in images)
+                // Verifica si las imágenes fueron enviadas
+                if (images != null && images.Any())
                 {
-                    byte[] fileBytes;
-                    using (var memoryStream = new MemoryStream())
+                    var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+
+                    // Asegúrate de que la carpeta de destino exista
+                    if (!Directory.Exists(uploadPath))
                     {
-                        await item.CopyToAsync(memoryStream);
-                        fileBytes = memoryStream.ToArray();
+                        Directory.CreateDirectory(uploadPath);
                     }
 
-                    await _context.Images.AddAsync(new Image
+                    foreach (var item in images)
                     {
-                        Description = Path.GetFileNameWithoutExtension(item.FileName),
-                        ImageData = fileBytes,
-                        EventRegisterID = eventRegister.Id,
-                    });
+                        // Generar un nombre único para el archivo (puedes modificar esto para mayor seguridad)
+                        var fileName = item.FileName;
+                        var filePath = Path.Combine(uploadPath, fileName);
 
-                };
+                        // Guardar el archivo en el sistema de archivos
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await item.CopyToAsync(fileStream);
+                        }
 
-                await _context.SaveChangesAsync();
+                        // Guardar solo la ruta del archivo en la base de datos
+                        await _context.Images.AddAsync(new Image
+                        {
+                            Description = Path.GetFileNameWithoutExtension(item.FileName),
+                            ImageData = filePath, // Guardamos la ruta del archivo
+                            EventRegisterID = eventRegister.Id,
+                        });
+                    }
+
+                    // Guardar los cambios en la base de datos
+                    await _context.SaveChangesAsync();
+                }
+
 
                 return Ok();
             }

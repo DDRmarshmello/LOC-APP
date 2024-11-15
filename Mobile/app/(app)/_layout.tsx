@@ -1,8 +1,14 @@
-import { Text, StyleSheet,SafeAreaView,ActivityIndicator } from "react-native";
+import {
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  ActivityIndicator,
+} from "react-native";
 import { Redirect, Stack, Tabs } from "expo-router";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useAuth } from "~/services/AuthContext";
 import { useColorScheme } from "~/lib/useColorScheme";
+import { PhotoProvider } from "~/services/PhotoContext";
+import { EventProvider } from "~/services/EventContext";
 
 export default function AppLayout() {
   const { user, isLoading } = useAuth();
@@ -11,8 +17,14 @@ export default function AppLayout() {
   // You can keep the splash screen open, or render a loading screen like we do here.
   if (isLoading) {
     return (
-      <SafeAreaView style={[styles.container, styles.horizontal]}>
-        <ActivityIndicator size="large" color={isDarkColorScheme ? "#fafafa" : "#0284c7"} />
+      <SafeAreaView
+        style={[styles.container, styles.horizontal]}
+        className="bg-white dark:bg-gray-800"
+      >
+        <ActivityIndicator
+          size="large"
+          color={isDarkColorScheme ? "#fafafa" : "#0284c7"}
+        />
       </SafeAreaView>
     );
   }
@@ -27,23 +39,27 @@ export default function AppLayout() {
 
   // This layout can be deferred because it's not the root layout.
   return (
-    <Stack>
-      <Stack.Screen
-        name="index"
-        options={{
-          title: "Home",
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="cam"
-        options={{
-          title: "Settings",
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen name="newItems" options={{ headerShown: false }} />
-    </Stack>
+    <PhotoProvider>
+      <EventProvider>
+        <Stack>
+          <Stack.Screen
+            name="index"
+            options={{
+              title: "Home",
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="cam"
+            options={{
+              title: "Settings",
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen name="newItems" options={{ headerShown: false }} />
+        </Stack>
+      </EventProvider>
+    </PhotoProvider>
   );
 }
 

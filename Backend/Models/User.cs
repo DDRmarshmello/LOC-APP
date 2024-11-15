@@ -24,9 +24,9 @@ namespace Backend.Models
 
         // Puedes incluir propiedades adicionales según tus necesidades
         public bool IsActive { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow; // Fecha de creación
-        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow; // Fecha de actualización
-        public ICollection<EventRegister> EventRegisters { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.Now; // Fecha de creación
+        public DateTime UpdatedAt { get; set; } = DateTime.Now; // Fecha de actualización
+        public ICollection<EventRegister>? EventRegisters { get; set; }
     }
 
     [Table("EventRegister")]
@@ -40,7 +40,9 @@ namespace Backend.Models
         public string cedula_rnc {  get; set; }
         public string latitud {  get; set; }
         public string longitud { get; set; }
-        public DateTime createdAt { get; set; } = DateTime.UtcNow;
+        public DateTime createdAt { get; set; } = DateTime.Now;
+        public string? Description { get; set; }
+        public string? Notas { get; set; }
         [JsonIgnore]
         public User? User { get; set; }
         public List<Image> Images { get; set; } = new List<Image>();
@@ -49,7 +51,7 @@ namespace Backend.Models
     public class Image
     {
         public int Id { get; set; }
-        public byte[] ImageData { get; set; }
+        public string ImageData { get; set; }
         public string Description { get; set; }
         public int EventRegisterID { get; set; }
 
