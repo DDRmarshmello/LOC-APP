@@ -1,4 +1,5 @@
 import axios from "axios";
+import { URL_BASE } from "~/lib/constants";
 
 export async function uploadPhotos(photos: string[], data: string) {
   const formData = new FormData();
@@ -15,7 +16,7 @@ export async function uploadPhotos(photos: string[], data: string) {
   });
 
   try {
-    const response = await axios.post("http://10.0.0.5:7059/api/Event/create", formData, {
+    const response = await axios.post(URL_BASE + "/Event/create", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },

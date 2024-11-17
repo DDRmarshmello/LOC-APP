@@ -57,6 +57,7 @@ export default function AppLayout() {
             }}
           />
           <Stack.Screen name="newItems" options={{ headerShown: false }} />
+          <Stack.Screen name="details" options={{ headerShown: false }} />
         </Stack>
       </EventProvider>
     </PhotoProvider>

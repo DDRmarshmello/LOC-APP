@@ -14,8 +14,29 @@ import Animated, {
   FadeOut,
 } from "react-native-reanimated";
 import { Link } from "expo-router";
+import { useState } from "react";
+import { RegisterUser } from "~/lib/Types";
+import { useAuth } from "~/services/AuthContext";
 
 export default function Screen() {
+  const [userData, setUserData] = useState<RegisterUser>({
+    username: "",
+    email: "",
+    password: "",
+  });
+  const { register } = useAuth();
+
+  const handleChange = (name: keyof RegisterUser, value: string) => {
+    setUserData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleLogin = async () => {
+    await register(userData); // Utiliza el método login del contexto
+  };
+
   return (
     <View className="bg-white h-full w-full dark:bg-gray-800">
       <StatusBar barStyle={"light-content"} />
@@ -23,8 +44,6 @@ export default function Screen() {
         className="h-full w-full absolute"
         source={require("../assets/images/background.png")}
       />
-
-      {/* Ligths */}
 
       <View className="flex-row justify-around w-full absolute">
         <Animated.Image

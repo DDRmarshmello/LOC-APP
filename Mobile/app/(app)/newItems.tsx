@@ -87,7 +87,7 @@ export default function Screen() {
         nombre_empresa: "",
       });
 
-      router.replace('/(app)')
+      router.replace("/(app)");
     }
   };
 
@@ -111,7 +111,7 @@ export default function Screen() {
         <StatusBar barStyle={"light-content"} />
         <Image
           className="h-full w-full absolute"
-          style={photos.length === 0 ? { bottom: 100 } : { bottom: 200 }}
+          style={photos.length === 0 ? { bottom: "15%" } : { bottom: "22%" }}
           source={require("../../assets/images/background.png")}
         />
 

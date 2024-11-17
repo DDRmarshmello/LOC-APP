@@ -33,12 +33,6 @@ export interface AuthResponse {
 }
 
 
-// Interface para las imágenes (si las hay)
-export interface Image {
-    url: string;
-    // Puedes agregar otros atributos de imagen si es necesario
-  }
-  
   // Interface para un "eventRegister" (registro de evento)
 export interface EventRegister {
     id?: number;
@@ -54,4 +48,23 @@ export interface EventRegister {
     images?: Image[] | null; // Lista de imágenes asociadas al evento
   }
   
+  
+
+  interface Image {
+    id: number;
+    imageData: string;
+    description: string;
+    eventRegisterID: number;
+  }
+  
+  export interface UserResponse {
+    id: number;
+    username: string;
+    passwordHash: string;
+    email: string;
+    isActive: boolean;
+    createdAt: string; // Usar Date si planeas parsear estas fechas
+    updatedAt: string; // Usar Date si planeas parsear estas fechas
+    eventRegisters: EventRegister[];
+  }
   

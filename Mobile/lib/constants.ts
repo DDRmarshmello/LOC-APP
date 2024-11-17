@@ -16,3 +16,7 @@ export const NAV_THEME = {
     text: 'hsl(0 0% 98%)', // foreground
   },
 };
+
+
+export const URL_BASE = "http://192.161.20.226:7059/api"
+export const IMAGES_URL = "http://192.161.20.226:7059/uploads/"

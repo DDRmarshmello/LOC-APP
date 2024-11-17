@@ -1,12 +1,14 @@
 // AuthContext.tsx
 import React, { createContext, useContext, useState, ReactNode } from "react";
 import authService from "./AuthServices"; // Asegúrate de que este servicio esté definido
-import { AuthResponse, LoginUser } from "~/lib/Types"; // Asegúrate de que estos modelos estén definidos
+import { AuthResponse, LoginUser, RegisterUser, User } from "~/lib/Types"; // Asegúrate de que estos modelos estén definidos
 
 interface AuthContextType {
   user: AuthResponse | null;
+  userInfo: User | null;
   login: (user: LoginUser) => Promise<void>;
   logout: () => void;
+  register: (user: RegisterUser) => Promise<void>;
   error: string | null;
   isLoading: boolean;
 }
@@ -17,6 +19,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [user, setUser] = useState<AuthResponse | null>(null);
+  const [userInfo, setUserInfo] = useState<User | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -25,6 +28,23 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     setError(null);
     try {
       const response = await authService.login(userData);
+      const responseInfo = await authService.GetUserInfo();
+
+      console.log(response);
+      setUser(response); // Almacena la respuesta del usuario, que generalmente incluirá el token
+      setUserInfo(responseInfo)
+    } catch (error) {
+      setError(error.message || "Error al iniciar sesión");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const register = async (userData: RegisterUser) => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await authService.register(userData);
       console.log(response);
       setUser(response); // Almacena la respuesta del usuario, que generalmente incluirá el token
     } catch (error) {
@@ -38,9 +58,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     authService.logout(); // Llama al método logout de AuthService
     setUser(null); // Limpia el usuario en el contexto
   };
-
   return (
-    <AuthContext.Provider value={{ user, login, logout, error, isLoading }}>
+    <AuthContext.Provider
+      value={{ user, login, logout, register, error, isLoading, userInfo }}
+    >
       {children}
     </AuthContext.Provider>
   );

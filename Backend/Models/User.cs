@@ -45,7 +45,7 @@ namespace Backend.Models
         public string? Notas { get; set; }
         [JsonIgnore]
         public User? User { get; set; }
-        public List<Image> Images { get; set; } = new List<Image>();
+        public ICollection<Image> Images { get; set; } = new List<Image>();
     }
 
     public class Image

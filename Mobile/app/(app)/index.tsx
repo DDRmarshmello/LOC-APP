@@ -12,59 +12,25 @@ import { useColorScheme } from "~/lib/useColorScheme";
 import Feather from "@expo/vector-icons/Feather";
 import Animated, { FadeInDown, FadeInUp } from "react-native-reanimated";
 import { router } from "expo-router";
-
-
-interface dt {
-  id: number;
-  date: string;
-  Location: string;
-  Person: string;
-}
-const DATA: dt[] = [
-  {
-    id: 1,
-    date: "2024-01-01 06:00 P.M.",
-    Location: "100010101010",
-    Person: "Angel Dilone",
-  },
-  {
-    id: 2,
-    date: "2024-01-01 06:00 P.M.",
-    Location: "100010101010",
-    Person: "Angel Dilone",
-  },
-  {
-    id: 3,
-    date: "2024-01-01 06:00 P.M.",
-    Location: "100010101010",
-    Person: "Angel Dilone",
-  },
-  {
-    id: 4,
-    date: "2024-01-01 06:00 P.M.",
-    Location: "100010101010",
-    Person: "Angel Dilone",
-  },
-  {
-    id: 5,
-    date: "2024-01-01 06:00 P.M.",
-    Location: "100010101010",
-    Person: "Angel Dilone",
-  },
-];
+import { useAuth } from "~/services/AuthContext";
 
 export default function Screen() {
   const { isDarkColorScheme } = useColorScheme();
+  const { userInfo } = useAuth();
   return (
     <ScrollView className="bg-white dark:bg-gray-800">
       <Animated.Image
-      entering={FadeInUp.delay(200).duration(1000).springify()}
+        entering={FadeInUp.delay(200).duration(1000).springify()}
         className="h-full w-full absolute"
-        style={{ bottom: 130 }}
+        style={
+          userInfo?.eventRegisters.length === 0
+            ? { bottom: "15%" }
+            : { bottom: "22%" }
+        }
         source={require("../../assets/images/background.png")}
       />
 
-      <View style={{ top: 70 }}>
+      <View style={{ top: "10%" }}>
         <Animated.Text
           entering={FadeInUp.delay(400).duration(1000).springify()}
           className="text-black dark:text-white text-center font-bold"
@@ -75,7 +41,11 @@ export default function Screen() {
       </View>
 
       <View className="mt-64" style={styles.actionRow}>
-        <RoundBtn icon={"add"} text={"Nuevo"} onPress={()=>router.push("/newItems")}/>
+        <RoundBtn
+          icon={"add"}
+          text={"Nuevo"}
+          onPress={() => router.push("/newItems")}
+        />
         <RoundBtn icon={"refresh"} text={"Recargar"} />
         <RoundBtn icon={"list"} text={"Detalle"} />
       </View>
@@ -84,32 +54,34 @@ export default function Screen() {
         Registros
       </Text>
       <View style={styles.transactions} className="bg-gray-400 ">
-        {DATA.length === 0 && (
+        {userInfo?.eventRegisters.length === 0 && (
           <Text style={{ padding: 14 }}>No registros yet</Text>
         )}
-        {DATA.map((Data) => (
+        {userInfo?.eventRegisters.map((Data) => (
           <View
             key={Data.id}
             style={{ flexDirection: "row", alignItems: "center", gap: 16 }}
           >
-            <View
-              className="bg-gray-300 dark:bg-gray-500"
-              style={styles.circle}
-            >
-              <Feather
-                name="align-justify"
-                size={24}
-                color={isDarkColorScheme ? "white" : "dark"}
-              />
-            </View>
+            <TouchableOpacity onPress={() => router.push("/details?id=9")}>
+              <View
+                className="bg-gray-300 dark:bg-gray-500"
+                style={styles.circle}
+              >
+                <Feather
+                  name="align-justify"
+                  size={24}
+                  color={isDarkColorScheme ? "white" : "dark"}
+                />
+              </View>
+            </TouchableOpacity>
 
             <View style={{ flex: 1 }}>
-              <Text style={{ fontWeight: "400" }}>{Data.Person}</Text>
+              <Text style={{ fontWeight: "400" }}>{Data.nombre_empresa}</Text>
               <Text style={{ color: Colors.gray, fontSize: 12 }}>
-                {Data.date.toLocaleString()}
+                {Data.createdAt?.toLocaleString()}
               </Text>
             </View>
-            <Text>{Data.Location}</Text>
+            <Text>{Data.latitud + Data.longitud}</Text>
           </View>
         ))}
       </View>

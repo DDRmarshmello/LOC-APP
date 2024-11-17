@@ -66,11 +66,17 @@ namespace Backend.Controllers
         }
 
         [HttpGet("list")]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<IActionResult> list()
         {
             var username = User.FindFirst(ClaimTypes.Name)?.Value;
-            return Ok(await _context.Users.Include(x=>x.EventRegisters).ToListAsync());
+            if(string.IsNullOrEmpty(username))
+                return Forbid();
+            var user = await _context.Users.Where(x=>x.Username.ToLower() == username.ToLower()).Select(x => x.Id).FirstOrDefaultAsync();
+            if (user != 0)
+                return Ok(await _context.Users.Include(x=>x.EventRegisters).ThenInclude(x=>x.Images).FirstOrDefaultAsync(x=>x.Id ==user));
+
+            return NotFound();
         }
     }
 }

@@ -1,8 +1,8 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-
+import { URL_BASE } from './constants';
 class ApiService {
   private instance = axios.create({
-    baseURL: 'http://10.0.0.5:7059/api', // Cambia la URL base según tu caso
+    baseURL: URL_BASE, // Cambia la URL base según tu caso
     timeout: 5000000,
     headers: {
       'Content-Type': 'application/json',
