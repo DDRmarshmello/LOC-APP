@@ -47,7 +47,7 @@ namespace Backend.Controllers
                     foreach (var item in images)
                     {
                         // Generar un nombre único para el archivo (puedes modificar esto para mayor seguridad)
-                        var fileName = item.FileName;
+                        var fileName = Guid.NewGuid().ToString();
                         var filePath = Path.Combine(uploadPath, fileName);
 
                         // Guardar el archivo en el sistema de archivos
